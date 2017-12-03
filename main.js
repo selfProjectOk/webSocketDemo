@@ -1,10 +1,4 @@
 var ws = require('nodejs-websocket');
-
-var game1 = null,
-    game2 = null,
-    game1Ready = false,
-    game2Ready = false;
-
 var connArray = [];
 
 var server = ws.createServer(function (conn) {
