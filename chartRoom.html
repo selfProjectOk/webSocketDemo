@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+  </style>
+</head>
+<body>
+  <div id="mess">正在连接...</div>
+  <div id="kuang">
+  </div>
+  <div>
+    <input id="input" type="text"/>
+    <button id="submit">发送</button>
+  </div>
+<script>
+  var mess = document.getElementById("mess");
+  var kuang = document.getElementById("kuang");
+  var input = document.getElementById("input");
+  var submit = document.getElementById("submit");
+  if(window.WebSocket){
+    var ws = new WebSocket('ws://192.168.40.75:3200');
+
+    ws.onopen = function(e){
+      console.log("连接服务器成功");
+      ws.send("apply-*-connect");
+      ws.send("xxx进入房间");
+    }
+    ws.onclose = function(e){
+      console.log("服务器关闭");
+    }
+    ws.onerror = function(){
+      console.log("连接出错");
+    }
+
+    ws.onmessage = function(e){
+      if (e.data === 'apply-*-success') {
+        mess.innerHTML = "连接成功"
+        submit.onclick = function(e){
+          ws.send(input.value);
+          input.value = '';
+        }
+      } else {
+        var time = new Date();
+        kuang.innerHTML += '<p>' + time + "</p><p>"+e.data+"</p><br/>"
+      }
+    }
+  }
+</script>
+</body>
+</html>
